@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define variables
-repo_url="https://github.com/your_username/your_repo.git"
+repo_url="git@github.com:maciek-pioro/commands.git"
 scripts_dir="$HOME/mp-scripts"
 functions_file="$scripts_dir/functions.sh"
 
