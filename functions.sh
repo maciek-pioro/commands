@@ -25,6 +25,10 @@ function ,_print_latest_log(){
 	cat "$latest_file"
 }
 
+function ,check_autoupdate_works(){
+	echo "It works indeed"
+}
+
 function ,log(){
 	,_go_to_latest_exp
 	,_print_latest_log
