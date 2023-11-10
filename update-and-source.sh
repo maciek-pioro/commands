@@ -19,6 +19,8 @@ echo "Updating script. Press Ctrl-C within $TIMEOUT second to skip... "
 sleep $TIMEOUT
 echo
 
+trap - SIGINT
+
 if [ $SKIP -eq 0 ]; then
     # Clone or pull the latest version of the git repo
     if [ -d "$scripts_dir" ]; then
@@ -43,6 +45,3 @@ if [ $SKIP -eq 0 ]; then
 else 
     echo "Skipping update and sourcing"
 fi
-
-# remove trap
-trap - SIGINT
