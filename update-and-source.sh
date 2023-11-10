@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Define variables
 repo_url="git@github.com:maciek-pioro/commands.git"
 scripts_dir="$HOME/mp-scripts"
