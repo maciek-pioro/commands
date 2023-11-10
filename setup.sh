@@ -26,7 +26,7 @@ backup_file() {
 # Function to add sourcing to the shell configuration file
 add_sourcing() {
     local shell_file=$1
-    local source_line="source $scripts_dir/functions.sh"
+    local source_line="source $scripts_dir/update-and-source.sh"
 
     # Backup the original file
     backup_file "$shell_file"
