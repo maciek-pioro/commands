@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Define variables
 scripts_dir="$HOME/mp-scripts"
 backup_dir="$HOME/mp-scripts-backup"
@@ -45,6 +43,7 @@ add_sourcing() {
 
 # Detect the user's shell and add sourcing accordingly
 if [ -n "$BASH_VERSION" ]; then
+    
     add_sourcing "$bashrc_file"
 elif [ -n "$ZSH_VERSION" ]; then
     add_sourcing "$zshrc_file"
