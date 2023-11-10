@@ -4,8 +4,10 @@ scripts_dir="$HOME/mp-scripts"
 functions_file="$scripts_dir/functions.sh"
 
 # Display warning and prompt for user confirmation
-read -t 1 -p "Updating script. Press Ctrl-C within 1 second to skip... " -n 1 -r
-echo    # move to a new line
+TIMEOUT=2
+echo "Updating script. Press Ctrl-C within $TIMEOUT second to skip... "
+sleep $TIMEOUT
+echo    # move to a new line``
 if [[ $REPLY =~ ^[Cc]$ ]]; then
     echo "Update skipped by user."
     exit 0
