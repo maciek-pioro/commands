@@ -34,3 +34,9 @@ function ,log(){
 	,_print_latest_log
 }
 
+function ,usage(){
+        if [ -z "$1" ]; then
+                1=250
+        fi
+        hpc-jobs-history -A plgplggllmeffi-gpu-a100 -d "$1" | awk '$11 ~ /^[0-9.]*$/ {sum += $11} END {print sum}'
+}
