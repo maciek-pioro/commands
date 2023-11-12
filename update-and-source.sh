@@ -1,6 +1,7 @@
 # Define variables
 repo_url="git@github.com:maciek-pioro/commands.git"
 scripts_dir="$HOME/mp-scripts"
+original_dir="$(pwd)"
 functions_file="$scripts_dir/functions.sh"
 SKIP=0
 
@@ -45,3 +46,5 @@ if [ $SKIP -eq 0 ]; then
 else 
     echo "Skipping update and sourcing"
 fi
+
+cd "$original_dir"
