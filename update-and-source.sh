@@ -16,8 +16,7 @@ trap handle_interrupt SIGINT
 
 # Display warning and prompt for user confirmation
 TIMEOUT=2
-echo "Updating script. Press Ctrl-C within $TIMEOUT second to skip... "
-sleep $TIMEOUT
+read -t $TIMEOUT -p "Press Enter to skip waiting, Ctrl-c to abort..." || true
 echo
 
 trap - SIGINT
