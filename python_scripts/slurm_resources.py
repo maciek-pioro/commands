@@ -1,3 +1,6 @@
+import subprocess
+import re
+
 def parse_resource_allocations(resource_entries):
     """
     Parse resource allocation strings and convert them into dictionaries with keys being resource types and values
