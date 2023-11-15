@@ -50,27 +50,57 @@ def calculate_available_resources(cfg_tres_list, alloc_tres_list):
 
     return available_resources_list
 
-# Extract and parse the CfgTRES and AllocTRES fields from the nodes output
-cfg_tres = [
-    "cpu=256,mem=1960860M,billing=1247,gres/gpu=14",
-    "cpu=256,mem=1960860M,billing=863,gres/gpu=8"
-]
-alloc_tres = [
-    "cpu=160,mem=1288G,gres/gpu=7",
-    "cpu=76,mem=578304M,gres/gpu=6"
-]
+def run_command(command):
+    """
+    Run a shell command and return the output.
+    """
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    output, error = process.communicate()
+    if process.returncode != 0:
+        raise RuntimeError(f"Command failed with error code {process.returncode}: {error.decode().strip()}")
+    return output.decode().strip()
 
-# Parse the resource allocations
-cfg_tres_list = parse_resource_allocations(cfg_tres)
-alloc_tres_list = parse_resource_allocations(alloc_tres)
+def extract_tres_data(node_output):
+    """
+    Extract the CfgTRES and AllocTRES data from the command output for each node.
+    :param node_output: The output from the 'scontrol -o show node' command.
+    :return: Two lists, one for CfgTRES and one for AllocTRES for each node.
+    """
+    cfg_tres_list = []
+    alloc_tres_list = []
+    node_entries = node_output.strip().split('\n')
 
-# Calculate available resources for each node
-available_resources = calculate_available_resources(cfg_tres_list, alloc_tres_list)
+    # Regex to match CfgTRES and AllocTRES fields
+    tres_regex = re.compile(r'CfgTRES=([^ ]+) AllocTRES=([^ ]+)')
+    
+    for entry in node_entries:
+        match = tres_regex.search(entry)
+        if match:
+            # Extract CfgTRES and AllocTRES data
+            cfg_tres, alloc_tres = match.groups()
+            cfg_tres_list.append(cfg_tres)
+            alloc_tres_list.append(alloc_tres)
 
-# Print the results
-node_names = ["gpu01", "login01"]
-for node, resources in zip(node_names, available_resources):
-    print(f"Node: {node}")
-    for res, avail in resources.items():
-        print(f"{res.upper()}: {avail}")
-    print()
+    return cfg_tres_list, alloc_tres_list
+
+if __name__ == '__main__':
+    # Execute the scontrol command and capture its output
+    command_output = run_command('scontrol -o show node')
+    
+    # Extract and parse the CfgTRES and AllocTRES fields from the nodes output
+    cfg_tres, alloc_tres = extract_tres_data(command_output)
+    
+    # Parse the resource allocations
+    cfg_tres_list = parse_resource_allocations(cfg_tres)
+    alloc_tres_list = parse_resource_allocations(alloc_tres)
+    
+    # Calculate available resources for each node
+    available_resources = calculate_available_resources(cfg_tres_list, alloc_tres_list)
+    
+    # Print the results
+    node_names = ["gpu01", "login01"]
+    for node, resources in zip(node_names, available_resources):
+        print(f"Node: {node}")
+        for res, avail in resources.items():
+            print(f"{res.upper()}: {avail}")
+        print()
