@@ -103,7 +103,7 @@ if __name__ == '__main__':
     # Print the results
     node_names = ["gpu01", "login01"]
     print("Free Resoureces:")
-    for node, available_resources, total_resources in zip(node_names, available_resources, cfg_tres):
+    for node, available_resources, total_resources in zip(node_names, available_resources, cfg_tres_list):
         print(f"Node: {node}")
         for res, avail in available_resources.items():
             print(f"{res.upper()}: {avail} / {total_resources[res]}")
