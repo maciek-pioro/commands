@@ -44,3 +44,7 @@ function ,usage(){
 function ,gpu_blame(){
 	nvidia-smi --query-gpu=index,uuid --format=csv,noheader,nounits | awk -F, '{print $1, $2}' | while read gpu_index gpu_uuid; do nvidia-smi --query-compute-apps=pid,used_memory,gpu_uuid --format=csv,noheader,nounits | grep $gpu_uuid | awk -v idx="$gpu_index" -F, '{printf("process %s on gpu-%s using %.2f GB memory: owner ", $1, idx, $2/1024); system("ps -o user= -p "$1)}'; done
  }
+
+function ,summarize_nodes(){
+	python3 ~/mp-scripts/python_scripts/slurm_resources.py
+}
