@@ -86,6 +86,19 @@ def extract_tres_data(node_output):
 
     return cfg_tres_list, alloc_tres_list
 
+def get_nodes(node_output):
+    node_entries = node_output.strip().split('\n')
+    nodes_regex = re.compile(r'NodeName=(\S+) ')
+    nodes = []
+
+    for entry in node_entries:
+        match = nodes_regex.search(entry)
+        if match:
+            # Extract CfgTRES and AllocTRES data
+            node_name = match.group()
+            nodes.append(node_name)
+
+
 if __name__ == '__main__':
     # Execute the scontrol command and capture its output
     command_output = run_command('scontrol -o show node')
@@ -100,6 +113,8 @@ if __name__ == '__main__':
     # Calculate available resources for each node
     available_resources = calculate_available_resources(cfg_tres_list, alloc_tres_list)
     
+    nodes = get_nodes(command_output)
+
     # Print the results
     node_names = ["gpu01", "login01"]
     print("Free Resoureces:")
