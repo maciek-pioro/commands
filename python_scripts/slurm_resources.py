@@ -113,10 +113,8 @@ if __name__ == '__main__':
     # Calculate available resources for each node
     available_resources = calculate_available_resources(cfg_tres_list, alloc_tres_list)
     
-    nodes = get_nodes(command_output)
+    node_names = get_nodes(command_output)
 
-    # Print the results
-    node_names = ["gpu01", "login01"]
     print("Free Resoureces:")
     for node, available_resources, total_resources in zip(node_names, available_resources, cfg_tres_list):
         print(f"Node: {node}")
