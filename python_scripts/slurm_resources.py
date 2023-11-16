@@ -98,6 +98,7 @@ def get_nodes(node_output):
             node_name = match.group()
             nodes.append(node_name)
 
+    return nodes
 
 if __name__ == '__main__':
     # Execute the scontrol command and capture its output
