@@ -116,7 +116,7 @@ if __name__ == '__main__':
     
     node_names = get_nodes(command_output)
 
-    print("Free Resoureces:")
+    print("Free Resources:")
     for node, available_resources, total_resources in zip(node_names, available_resources, cfg_tres_list):
         print(f"Node: {node}")
         for res, avail in available_resources.items():
