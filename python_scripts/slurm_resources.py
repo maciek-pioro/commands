@@ -95,7 +95,7 @@ def get_nodes(node_output):
         match = nodes_regex.search(entry)
         if match:
             # Extract CfgTRES and AllocTRES data
-            node_name = match.group()
+            node_name = match.group(1)
             nodes.append(node_name)
 
     return nodes
