@@ -1,3 +1,4 @@
+from collections import defaultdict
 import subprocess
 import re
 from typing import Union
@@ -129,9 +130,25 @@ if __name__ == '__main__':
     
     node_names = get_nodes(command_output)
 
+    available_summarized = defaultdict(int)
+    total_summarized = defaultdict(int)
+
     print("Free Resources:")
     for node, available_resources, total_resources in zip(node_names, available_resources, cfg_tres_list):
         print(f"Node: {node}")
+
         for res, avail in available_resources.items():
             print(f"{res.upper()}: {avail} / {total_resources[res]}")
+            if isinstance(
+                avail, (int, float)
+            ):
+                available_summarized[res] += avail
+            if isinstance(
+                total_resources[res], (int, float)
+            ):
+                total_summarized[res] += total_resources[res]
         print()
+
+    print("Total Free Resources:")
+    for res, avail in available_summarized.items():
+        print(f"{res.upper()}: {avail} / {total_summarized[res]}")
