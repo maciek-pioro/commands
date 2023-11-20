@@ -1,5 +1,18 @@
 import subprocess
 import re
+from typing import Union
+
+def parse_int_or_float(value: str) -> Union[int, float]:
+    """
+    Parse a string into an integer or float.
+
+    :param value: The string value to parse.
+    :return: The parsed value as an integer or float.
+    """
+    if '.' in value:
+        return float(value)
+    else:
+        return int(value)
 
 def parse_resource_allocations(resource_entries):
     """
@@ -14,11 +27,11 @@ def parse_resource_allocations(resource_entries):
     # Define a helper function to parse resource values and convert G (gigabyte) to M (megabyte) if necessary.
     def parse_resource_value(value):
         if value.endswith('G'):
-            return int(value.rstrip('G')) * 1024  # Convert from GB to MB
+            return parse_int_or_float(value.rstrip('G')) * 1024  # Convert from GB to MB
         elif value.endswith('M'):
-            return int(value.rstrip('M'))
+            return parse_int_or_float(value.rstrip('M'))
         else:
-            return int(value)
+            return parse_int_or_float(value)
 
     # Process each entry
     for entry in resource_entries:
