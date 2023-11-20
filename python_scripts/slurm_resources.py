@@ -149,6 +149,7 @@ if __name__ == '__main__':
                 total_summarized[res] += total_resources[res]
         print()
 
+    print('=' * 80)')
     print("Total Free Resources:")
     for res, avail in available_summarized.items():
         print(f"{res.upper()}: {avail} / {total_summarized[res]}")
