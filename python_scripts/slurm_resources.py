@@ -27,7 +27,9 @@ def parse_resource_allocations(resource_entries):
 
     # Define a helper function to parse resource values and convert G (gigabyte) to M (megabyte) if necessary.
     def parse_resource_value(value):
-        if value.endswith('G'):
+        if value.endswith('T'):
+            return parse_int_or_float(value.rstrip('T')) * 1024 * 1024  # Convert from GB to MB
+        elif value.endswith('G'):
             return parse_int_or_float(value.rstrip('G')) * 1024  # Convert from GB to MB
         elif value.endswith('M'):
             return parse_int_or_float(value.rstrip('M'))
