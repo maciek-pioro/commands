@@ -35,10 +35,10 @@ function ,log(){
 }
 
 function ,usage(){
-        if [ -z "$1" ]; then
-                1=250
-        fi
-        hpc-jobs-history -A plgplggllmeffi-gpu-a100 -d "$1" | awk '$11 ~ /^[0-9.]*$/ {sum += $11} END {print sum}'
+	if [ -z "$1" ]; then
+			1=250
+	fi
+	hpc-jobs-history -A plgplggllmeffi-gpu-a100 -d "$1" | awk '$11 ~ /^[0-9.]*$/ {sum += $11} END {print sum}'
 }
 
 
@@ -47,7 +47,9 @@ function ,summarize_nodes(){
 }
 
 # credit: https://hpc-wiki.info/hpc/Zsh
-function ,slurmlogpath { scontrol show job $1 | grep StdOut | sed -e 's/^\s*StdOut=//' }
+function ,slurmlogpath { 
+	scontrol show job $1 | grep StdOut | sed -e 's/^\s*StdOut=//' 
+}
 
 # credit: https://hpc-wiki.info/hpc/Zsh
 function ,ftails { 
@@ -64,7 +66,7 @@ function ,ftails {
             JOBID=$(eval "whiptail --title 'Choose jobs to tail' --menu 'Choose Job to tail' 25 78 16 $JOBS" 3>&1 1>&2 2>&3)
         fi
     fi
-    SLURMLOGPATH=$(slurmlogpath $JOBID)
+    SLURMLOGPATH=$(,slurmlogpath $JOBID)
     if [[ -e $SLURMLOGPATH ]]; then
         tail -n100 -f $SLURMLOGPATH
     else
