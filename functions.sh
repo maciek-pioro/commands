@@ -41,10 +41,41 @@ function ,usage(){
         hpc-jobs-history -A plgplggllmeffi-gpu-a100 -d "$1" | awk '$11 ~ /^[0-9.]*$/ {sum += $11} END {print sum}'
 }
 
-function ,gpu_blame(){
-	nvidia-smi --query-gpu=index,uuid --format=csv,noheader,nounits | awk -F, '{print $1, $2}' | while read gpu_index gpu_uuid; do nvidia-smi --query-compute-apps=pid,used_memory,gpu_uuid --format=csv,noheader,nounits | grep $gpu_uuid | awk -v idx="$gpu_index" -F, '{printf("process %s on gpu-%s using %.2f GB memory: owner ", $1, idx, $2/1024); system("ps -o user= -p "$1)}'; done
- }
 
 function ,summarize_nodes(){
 	python3 ~/mp-scripts/python_scripts/slurm_resources.py
 }
+
+# credit: https://hpc-wiki.info/hpc/Zsh
+function slurmlogpath { scontrol show job $1 | grep StdOut | sed -e 's/^\s*StdOut=//' }
+
+# credit: https://hpc-wiki.info/hpc/Zsh
+function ftails { 
+    JOBID=$1
+    if [[ -z $JOBID ]]; then
+        JOBS=$(squeue --format="%i \\'%j\\' " -u $USER -t RUNNING | grep -v JOBID)
+        NUMBER_OF_JOBS=$(echo "$JOBS" | wc -l)
+        JOBID=
+        if [[ "$NUMBER_OF_JOBS" -eq 1 ]]; then
+            JOBID=$(echo $JOBS | sed -e "s/'//g" | sed -e 's/ .*//')
+        else
+            JOBS=$(echo $JOBS | tr -d '\n')
+
+            JOBID=$(eval "whiptail --title 'Choose jobs to tail' --menu 'Choose Job to tail' 25 78 16 $JOBS" 3>&1 1>&2 2>&3)
+        fi
+    fi
+    SLURMLOGPATH=$(slurmlogpath $JOBID)
+    if [[ -e $SLURMLOGPATH ]]; then
+        tail -n100 -f $SLURMLOGPATH
+    else
+        echo "No slurm-log-file found"
+    fi
+}
+
+
+# deprecated
+
+# credit: https://github.com/kuba-krj
+# function ,gpu_blame(){
+# 	nvidia-smi --query-gpu=index,uuid --format=csv,noheader,nounits | awk -F, '{print $1, $2}' | while read gpu_index gpu_uuid; do nvidia-smi --query-compute-apps=pid,used_memory,gpu_uuid --format=csv,noheader,nounits | grep $gpu_uuid | awk -v idx="$gpu_index" -F, '{printf("process %s on gpu-%s using %.2f GB memory: owner ", $1, idx, $2/1024); system("ps -o user= -p "$1)}'; done
+# }
