@@ -47,10 +47,10 @@ function ,summarize_nodes(){
 }
 
 # credit: https://hpc-wiki.info/hpc/Zsh
-function slurmlogpath { scontrol show job $1 | grep StdOut | sed -e 's/^\s*StdOut=//' }
+function ,slurmlogpath { scontrol show job $1 | grep StdOut | sed -e 's/^\s*StdOut=//' }
 
 # credit: https://hpc-wiki.info/hpc/Zsh
-function ftails { 
+function ,ftails { 
     JOBID=$1
     if [[ -z $JOBID ]]; then
         JOBS=$(squeue --format="%i \\'%j\\' " -u $USER -t RUNNING | grep -v JOBID)
