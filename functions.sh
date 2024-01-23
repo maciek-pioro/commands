@@ -1,3 +1,15 @@
+function ,watch() {
+	tmpfile="$(mktemp)"
+	while true; 
+ 	do; 
+  		$@ > "$tmpfile";
+    		clear;
+		cat "$tmpfile";
+  		sleep 1;
+    	done;
+}
+
+
 function ,myjobs() {
 	watch "squeue -u $USER --format='%.18i | %.9P | %45j | %.2t | %.10M | %.8Q | %.20V | %.6D | %R'"
 }
