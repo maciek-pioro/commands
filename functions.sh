@@ -63,6 +63,10 @@ function ,slurmlogpath {
 	scontrol show job $1 | grep StdOut | sed -e 's/^\s*StdOut=//' 
 }
 
+function ,slurmerrlogpath { 
+	scontrol show job $1 | grep StdOut | sed -e 's/^\s*StdOut=//' 
+}
+
 # credit: https://hpc-wiki.info/hpc/Zsh
 function ,ftails { 
     JOBID=$1
@@ -79,8 +83,9 @@ function ,ftails {
         fi
     fi
     SLURMLOGPATH=$(,slurmlogpath $JOBID)
+    SLURMERRLOGPATH=$(,slurmerrlogpath $JOBID)
     if [[ -e $SLURMLOGPATH ]]; then
-        tail -n100 -f $SLURMLOGPATH
+        tail -n100 -f $SLURMLOGPATH $SLURMERRLOGPATH
     else
         echo "No slurm-log-file found"
     fi
