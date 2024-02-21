@@ -64,7 +64,7 @@ function ,slurmlogpath {
 }
 
 function ,slurmerrlogpath { 
-	scontrol show job $1 | grep StdOut | sed -e 's/^\s*StdOut=//' 
+	scontrol show job $1 | grep StdErr | sed -e 's/^\s*StdErr=//' 
 }
 
 # credit: https://hpc-wiki.info/hpc/Zsh
