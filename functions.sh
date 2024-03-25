@@ -91,6 +91,9 @@ function ,ftails {
     fi
 }
 
+function ,tmux_kill_all {
+	tmux kill-server
+}
 
 # deprecated
 
