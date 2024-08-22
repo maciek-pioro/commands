@@ -95,6 +95,11 @@ function ,tmux_kill_all {
 	tmux kill-server
 }
 
+function ,which-key() {                                                                                                                                                          INT ✘  base   09:51:30 
+  local host=$1
+  ssh -G "$host" 2>/dev/null | awk '/identityfile/ {print $2}'
+}
+
 # deprecated
 
 # credit: https://github.com/kuba-krj
