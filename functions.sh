@@ -11,11 +11,11 @@ function ,watch() {
 
 
 function ,myjobs() {
-	watch "squeue -u $USER --format='%.18i | %.9P | %45j | %.2t | %.10M | %.8Q | %.20V | %.6D | %R'"
+	watch -n60 "squeue -u $USER --format='%.18i | %.9P | %45j | %.2t | %.10M | %.8Q | %.20V | %.6D | %R'"
 }
 
 function ,ourjobs() {
-	watch 'squeue --format="%.18i | %.12u | %.12P | %45j | %.2t | %.10M | %.8Q | %.20V | %.6D | %R"'
+	watch -n60 'squeue --format="%.18i | %.12u | %.12P | %45j | %.2t | %.10M | %.8Q | %.20V | %.6D | %R"'
 }
 
 function ,sparsity() {
